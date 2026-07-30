@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hey Pandu 🐼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ LOADING SCREEN ============ -->
+<div id="loadingScreen" class="loading-screen" role="status" aria-live="polite">
+  <svg class="loading-panda" width="140" height="140" viewBox="0 0 200 200" aria-hidden="true">
+    <ellipse cx="100" cy="120" rx="62" ry="54" fill="#F5F3EF"/>
+    <ellipse cx="55" cy="70" rx="22" ry="22" fill="#3B3A39"/>
+    <ellipse cx="145" cy="70" rx="22" ry="22" fill="#3B3A39"/>
+    <ellipse cx="100" cy="95" rx="50" ry="44" fill="#FDFCFB"/>
+    <ellipse cx="72" cy="98" rx="15" ry="18" fill="#3B3A39"/>
+    <ellipse cx="128" cy="98" rx="15" ry="18" fill="#3B3A39"/>
+    <path class="sleep-eye" d="M64 98 q8 8 16 0" stroke="#FDFCFB" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path class="sleep-eye" d="M120 98 q8 8 16 0" stroke="#FDFCFB" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="100" cy="112" rx="9" ry="7" fill="#3B3A39"/>
+    <text x="150" y="55" class="zzz" font-size="18" fill="#8C8C8C" font-family="Poppins, sans-serif">z</text>
+    <text x="162" y="40" class="zzz zzz2" font-size="14" fill="#8C8C8C" font-family="Poppins, sans-serif">z</text>
+  </svg>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+  <p class="loading-text">Waking up panda&hellip;</p>
+</div>
+
+<!-- ============ AMBIENT BACKGROUND (persists across all sections) ============ -->
+<div class="scene" aria-hidden="true">
+  <div class="sky"></div>
+  <div class="clouds">
+    <svg class="cloud cloud-1" viewBox="0 0 120 60"><ellipse cx="30" cy="35" rx="30" ry="18"/><ellipse cx="60" cy="25" rx="34" ry="22"/><ellipse cx="90" cy="35" rx="26" ry="16"/></svg>
+    <svg class="cloud cloud-2" viewBox="0 0 120 60"><ellipse cx="30" cy="35" rx="30" ry="18"/><ellipse cx="60" cy="25" rx="34" ry="22"/><ellipse cx="90" cy="35" rx="26" ry="16"/></svg>
+    <svg class="cloud cloud-3" viewBox="0 0 120 60"><ellipse cx="30" cy="35" rx="30" ry="18"/><ellipse cx="60" cy="25" rx="34" ry="22"/><ellipse cx="90" cy="35" rx="26" ry="16"/></svg>
+  </div>
+
+  <div class="bamboo-layer bamboo-back">
+    <svg class="stalk" style="left:4%" viewBox="0 0 40 400"><use href="#bambooStalk"/></svg>
+    <svg class="stalk" style="left:18%" viewBox="0 0 40 400"><use href="#bambooStalk"/></svg>
+    <svg class="stalk" style="left:82%" viewBox="0 0 40 400"><use href="#bambooStalk"/></svg>
+    <svg class="stalk" style="left:94%" viewBox="0 0 40 400"><use href="#bambooStalk"/></svg>
+  </div>
+  <div class="bamboo-layer bamboo-front">
+    <svg class="stalk" style="left:-2%" viewBox="0 0 40 400"><use href="#bambooStalk"/></svg>
+    <svg class="stalk" style="left:10%" viewBox="0 0 40 400"><use href="#bambooStalk"/></svg>
+    <svg class="stalk" style="left:88%" viewBox="0 0 40 400"><use href="#bambooStalk"/></svg>
+    <svg class="stalk" style="left:100%" viewBox="0 0 40 400"><use href="#bambooStalk"/></svg>
+  </div>
+
+  <div class="leaves-field" id="leavesField"></div>
+  <div class="butterflies" id="butterflyField"></div>
+
+  <!-- shared SVG defs -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <g id="bambooStalk">
+        <rect x="14" y="0" width="12" height="400" rx="6" fill="#B7D9A0"/>
+        <rect x="14" y="60" width="12" height="4" fill="#93BE7A"/>
+        <rect x="14" y="150" width="12" height="4" fill="#93BE7A"/>
+        <rect x="14" y="240" width="12" height="4" fill="#93BE7A"/>
+        <rect x="14" y="330" width="12" height="4" fill="#93BE7A"/>
+      </g>
+      <g id="leafShape">
+        <path d="M0 8 C 6 -4, 20 -4, 26 8 C 20 20, 6 20, 0 8 Z" fill="#A9D28C"/>
+      </g>
+      <g id="butterflyShape">
+        <path d="M0 0 C -6 -8, -12 -4, -10 2 C -12 8, -6 10, 0 2 Z" fill="#F3B6C6"/>
+        <path d="M0 0 C 6 -8, 12 -4, 10 2 C 12 8, 6 10, 0 2 Z" fill="#F6C9D6"/>
+        <line x1="0" y1="-2" x2="0" y2="4" stroke="#8a7060" stroke-width="1"/>
+      </g>
+    </defs>
+  </svg>
+</div>
+
+<!-- Bamboo-segment scroll progress -->
+<div class="progress-rail" id="progressRail" aria-hidden="true">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<!-- Sound toggle -->
+<button id="soundToggle" class="sound-toggle" aria-pressed="false" aria-label="Toggle forest ambience sound">
+  <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M4 9v6h4l5 5V4L8 9H4z"/></svg>
+  <span class="sound-toggle-label">forest sounds</span>
+</button>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main id="mainContent" class="main-content" hidden>
+
+  <!-- HERO -->
+  <section class="section hero" id="hero">
+    <div class="hero-panda-wrap">
+      <svg id="heroPanda" class="hero-panda" viewBox="0 0 260 260" role="img" aria-label="A cute cartoon panda sitting with bamboo">
+        <!-- tail -->
+        <ellipse cx="130" cy="215" rx="10" ry="8" fill="#3B3A39"/>
+        <!-- body -->
+        <ellipse cx="130" cy="185" rx="70" ry="55" fill="#FAF8F5"/>
+        <!-- arms -->
+        <ellipse class="panda-arm-l" cx="70" cy="175" rx="18" ry="30" fill="#3B3A39"/>
+        <ellipse class="panda-arm-r" cx="190" cy="175" rx="18" ry="30" fill="#3B3A39"/>
+        <!-- legs -->
+        <ellipse cx="95" cy="235" rx="24" ry="16" fill="#3B3A39"/>
+        <ellipse cx="165" cy="235" rx="24" ry="16" fill="#3B3A39"/>
+        <!-- head -->
+        <g class="panda-head">
+          <ellipse cx="45" cy="60" rx="26" ry="26" fill="#3B3A39" class="ear ear-l"/>
+          <ellipse cx="135" cy="60" rx="26" ry="26" fill="#3B3A39" class="ear ear-r"/>
+          <ellipse cx="90" cy="95" rx="58" ry="52" fill="#FDFCFB"/>
+          <!-- eye patches -->
+          <ellipse cx="62" cy="100" rx="17" ry="21" fill="#3B3A39"/>
+          <ellipse cx="118" cy="100" rx="17" ry="21" fill="#3B3A39"/>
+          <!-- eyes (blinking) -->
+          <g class="eye eye-l">
+            <circle cx="62" cy="102" r="6" fill="#FDFCFB"/>
+            <circle cx="63.5" cy="100.5" r="2.4" fill="#2b2b2b"/>
+          </g>
+          <g class="eye eye-r">
+            <circle cx="118" cy="102" r="6" fill="#FDFCFB"/>
+            <circle cx="119.5" cy="100.5" r="2.4" fill="#2b2b2b"/>
+          </g>
+          <!-- blush -->
+          <ellipse cx="48" cy="120" rx="9" ry="5.5" fill="#F6C9C9" opacity="0.7"/>
+          <ellipse cx="132" cy="120" rx="9" ry="5.5" fill="#F6C9C9" opacity="0.7"/>
+          <!-- nose -->
+          <ellipse cx="90" cy="112" rx="7" ry="5" fill="#2b2b2b"/>
+          <!-- mouth: neutral & smile paths, toggled via class -->
+          <path class="mouth mouth-neutral" d="M78 122 Q90 130 102 122" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path class="mouth mouth-smile" d="M74 120 Q90 138 106 120" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </g>
+        <!-- bamboo in hands -->
+        <rect x="150" y="150" width="10" height="70" rx="5" fill="#B7D9A0" transform="rotate(18 155 185)"/>
+        <use href="#leafShape" x="170" y="140" transform="scale(0.9)"/>
+      </svg>
+      <div class="hearts-burst" id="heartsBurst" aria-hidden="true"></div>
+    </div>
+
+    <h1 class="hero-title">Hey Pandu <span class="wave-emoji" aria-hidden="true">🐼</span></h1>
+    <p class="hero-subtitle">I made a tiny little website.</p>
+    <button class="btn-continue" id="continueBtn">
+      <span>Continue</span>
+      <span class="arrow" aria-hidden="true">→</span>
+    </button>
+    <p class="hero-hint">psst, tap the panda first 🎋</p>
+  </section>
+
+  <!-- STORY CARDS -->
+  <section class="section story" id="story" aria-label="story">
+    <div class="branch-line" aria-hidden="true"></div>
+
+    <article class="bamboo-card" data-card="1">
+      <span class="card-emoji" aria-hidden="true">🐼</span>
+      <p>Sorry agar maine tumhe awkward feel karwaya ho. 😭</p>
+    </article>
+
+    <article class="bamboo-card" data-card="2">
+      <p>Bas honestly jo feel hua woh bol diya tha.</p>
+    </article>
+
+    <article class="bamboo-card" data-card="3">
+      <p>That's all. Don't worry.<br>Koi pressure nahi hai. 🌱</p>
+    </article>
+
+    <article class="bamboo-card" data-card="4">
+      <p>Hope hum normal baat karte rahein :)<br>Aur pehle ki tarah random baatein aur bakchodi bhi 😂🐼</p>
+    </article>
+
+    <button class="scroll-next" id="scrollNext" aria-label="Continue to the end">
+      <span class="scroll-next-dot"></span>
+    </button>
+  </section>
+
+  <!-- FINAL SECTION -->
+  <section class="section finale" id="finale">
+    <svg id="wavingPanda" class="waving-panda" viewBox="0 0 260 260" role="img" aria-label="Panda waving happily">
+      <ellipse cx="130" cy="185" rx="70" ry="55" fill="#FAF8F5"/>
+      <ellipse cx="165" cy="235" rx="24" ry="16" fill="#3B3A39"/>
+      <ellipse cx="95" cy="235" rx="24" ry="16" fill="#3B3A39"/>
+      <ellipse cx="70" cy="175" rx="18" ry="30" fill="#3B3A39"/>
+      <g class="waving-arm">
+        <ellipse cx="190" cy="150" rx="18" ry="30" fill="#3B3A39"/>
+      </g>
+      <ellipse cx="45" cy="60" rx="26" ry="26" fill="#3B3A39"/>
+      <ellipse cx="135" cy="60" rx="26" ry="26" fill="#3B3A39"/>
+      <ellipse cx="90" cy="95" rx="58" ry="52" fill="#FDFCFB"/>
+      <ellipse cx="62" cy="100" rx="17" ry="21" fill="#3B3A39"/>
+      <ellipse cx="118" cy="100" rx="17" ry="21" fill="#3B3A39"/>
+      <circle cx="62" cy="99" r="6" fill="#FDFCFB"/>
+      <circle cx="63.5" cy="97.5" r="2.4" fill="#2b2b2b"/>
+      <circle cx="118" cy="99" r="6" fill="#FDFCFB"/>
+      <circle cx="119.5" cy="97.5" r="2.4" fill="#2b2b2b"/>
+      <ellipse cx="48" cy="120" rx="9" ry="5.5" fill="#F6C9C9" opacity="0.7"/>
+      <ellipse cx="132" cy="120" rx="9" ry="5.5" fill="#F6C9C9" opacity="0.7"/>
+      <ellipse cx="90" cy="112" rx="7" ry="5" fill="#2b2b2b"/>
+      <path d="M74 120 Q90 138 106 120" stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <h2 class="finale-title">Bas itna hi.<br>Have an amazing day. 🌿🐼</h2>
+    <p class="finale-caption">Panda has successfully delivered the message.</p>
+
+    <div class="stamp" id="stamp">
+      <span>MISSION<br>COMPLETE</span>
+    </div>
+
+    <div class="replay-wrap">
+      <button class="btn-replay" id="replayBtn">Play again ↺</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- optional ambience audio, no autoplay -->
+<audio id="forestAudio" loop preload="none">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8e4c00061.mp3?filename=forest-with-small-river-birds-and-nature-field-recording-6735.mp3" type="audio/mpeg">
+</audio>
+
+<script src="script.js"></script>
+</body>
+</html>
