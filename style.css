@@ -77,7 +77,7 @@ h1,h2{ font-family: var(--font-display); font-weight:700; }
 
 .bamboo-layer{ position:absolute; inset:0; }
 .bamboo-back{ opacity:.55; filter: blur(1px) brightness(1.05); }
-.bamboo-front{ opacity:.9; }
+.bamboo-front{ opacity:.9; z-index: 2; pointer-events: none; }
 .stalk{
   position:absolute; bottom:-20px; width: 46px; height: 62vh; min-height:340px;
   transform-origin: bottom center;
@@ -262,13 +262,38 @@ h1,h2{ font-family: var(--font-display); font-weight:700; }
 
 /* ---------------- Finale ---------------- */
 .finale{ gap: 6px; }
-.waving-panda{ width: min(240px, 50vw); filter: drop-shadow(0 22px 30px rgba(60,50,30,0.14)); }
-.waving-arm{ transform-origin: 190px 128px; animation: waveArm 1.4s ease-in-out infinite; }
-@keyframes waveArm{
+.waving-panda{ width: min(240px, 50vw); filter: drop-shadow(0 22px 30px rgba(60,50,30,0.14)); transform-style: preserve-3d; transition: transform .6s var(--ease-soft), opacity .6s var(--ease-soft); }
+.waving-arm.wave-once{ transform-origin: 190px 128px; animation: waveArmOnce 1.3s ease-in-out forwards; }
+@keyframes waveArmOnce{
   0%,100%{ transform: rotate(0deg); }
   25%{ transform: rotate(-28deg); }
   50%{ transform: rotate(-6deg); }
   75%{ transform: rotate(-28deg); }
+}
+
+.waving-panda.smiling .mouth-smile{ opacity:1; }
+.waving-panda.smiling .mouth-neutral{ opacity:0; }
+
+.waving-panda.turned{ transform: rotateY(180deg); }
+
+.waving-panda.walking{ animation: pandaWalk 2.2s var(--ease-soft) forwards; }
+@keyframes pandaWalk{
+  0%{ transform: rotateY(180deg) translate(0, 0) scale(1); opacity:1; }
+  25%{ transform: rotateY(180deg) translate(30px, -6px) scale(0.95); opacity:1; }
+  50%{ transform: rotateY(180deg) translate(70px, -12px) scale(0.9); opacity:0.9; }
+  75%{ transform: rotateY(180deg) translate(110px, -18px) scale(0.82); opacity:0.6; }
+  100%{ transform: rotateY(180deg) translate(150px, -24px) scale(0.75); opacity:0; }
+}
+
+.waving-panda.disappeared{ opacity:0; pointer-events:none; }
+
+.tiny-paw{
+  position: fixed; z-index: 10; pointer-events:none; font-size: 13px; opacity: .6;
+  animation: tinyPawFade 1.6s ease-out forwards;
+}
+@keyframes tinyPawFade{
+  0%{ opacity:.6; transform: scale(1); }
+  100%{ opacity:0; transform: scale(0.7) translateY(4px); }
 }
 
 .finale-title{ font-size: clamp(2rem, 5.5vw, 2.9rem); margin: 18px 0 6px; }

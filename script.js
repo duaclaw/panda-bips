@@ -148,13 +148,79 @@
   }, { threshold: 0.35 });
   cards.forEach(c => cardObserver.observe(c));
 
-  /* ---------------- Finale: stamp + celebration ---------------- */
-  const stamp = document.getElementById('stamp');
+  /* ---------------- Finale: animation + celebration ---------------- */
+  const wavingPanda = document.getElementById('wavingPanda');
   let celebrated = false;
+  let pandaAnimated = false;
+  let animationTimeouts = [];
+
+  function spawnTinyPawPrint(){
+    if(!wavingPanda) return;
+    const rect = wavingPanda.getBoundingClientRect();
+    const paw = document.createElement('div');
+    paw.className = 'tiny-paw';
+    paw.textContent = '🐾';
+    const x = rect.left + rect.width / 2 + (Math.random()*16 - 8);
+    const y = rect.bottom - 15 + (Math.random()*8 - 4);
+    paw.style.left = x + 'px';
+    paw.style.top = y + 'px';
+    document.body.appendChild(paw);
+    setTimeout(() => paw.remove(), 1600);
+  }
+
+  function playFinalePandaAnimation(){
+    if(pandaAnimated) return;
+    pandaAnimated = true;
+    if(!wavingPanda) return;
+
+    // 1. Smiles
+    const t1 = setTimeout(() => {
+      wavingPanda.classList.add('smiling');
+    }, 300);
+    animationTimeouts.push(t1);
+
+    // 2. Waves once
+    const t2 = setTimeout(() => {
+      const wavingArm = wavingPanda.querySelector('.waving-arm');
+      if(wavingArm) wavingArm.classList.add('wave-once');
+    }, 800);
+    animationTimeouts.push(t2);
+
+    // 3. Turns around
+    const t3 = setTimeout(() => {
+      const wavingArm = wavingPanda.querySelector('.waving-arm');
+      if(wavingArm) wavingArm.classList.remove('wave-once');
+      wavingPanda.classList.add('turned');
+    }, 2300);
+    animationTimeouts.push(t3);
+
+    // 4. Walks behind the bamboo & leaves tiny fading paw prints
+    const t4 = setTimeout(() => {
+      wavingPanda.classList.add('walking');
+      if(!reduceMotion){
+        const pawInterval = setInterval(() => {
+          if(!wavingPanda.classList.contains('walking')){
+            clearInterval(pawInterval);
+            return;
+          }
+          spawnTinyPawPrint();
+        }, 360);
+        setTimeout(() => clearInterval(pawInterval), 2000);
+      }
+    }, 3100);
+    animationTimeouts.push(t4);
+
+    // 5. Disappears
+    const t5 = setTimeout(() => {
+      wavingPanda.classList.add('disappeared');
+    }, 5300);
+    animationTimeouts.push(t5);
+  }
+
   function celebrate(){
     if(celebrated) return;
     celebrated = true;
-    stamp.classList.add('show');
+    playFinalePandaAnimation();
     if(reduceMotion) return;
     const items = ['🌿','💗','🍃','💚'];
     for(let i=0;i<26;i++){
@@ -180,8 +246,15 @@
   /* ---------------- Replay ---------------- */
   document.getElementById('replayBtn').addEventListener('click', () => {
     document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
-    stamp.classList.remove('show');
     celebrated = false;
+    pandaAnimated = false;
+    animationTimeouts.forEach(clearTimeout);
+    animationTimeouts = [];
+    if(wavingPanda){
+      wavingPanda.classList.remove('smiling', 'turned', 'walking', 'disappeared');
+      const wavingArm = wavingPanda.querySelector('.waving-arm');
+      if(wavingArm) wavingArm.classList.remove('wave-once');
+    }
   });
 
   /* ---------------- Scroll progress (bamboo-segment bar) ---------------- */
